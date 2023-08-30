@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+
+<!--
+   This PAGE is the user interface of the project. the html is concerned with structuring the items ina card like fashion, where each svg is a letter , the sum of which is the name of the product. the library above is used to simulate a swipe style motion , gamifying the work process.
+   see line 54 for the javascript that handles actually displaying the information. There is cleanup to do here, I have redundancy of information just copied and pasted from grabimage.py and get data.py here but for all intents and purposes this is just to display a minimal viable product that is hosted and working
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+
+
+    <div class="card-slider">
+        <div class="nav">
+            <div class="prev">
+                <a href="#" class=" red">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Out of stock
+                  </a>
+       
+            </div>
+            <svg class ="go-back" viewbox = "0 0 50 9">
+                <path d="m0 4.5 5-3m-5 3 5 3m45-3h-77"></path>
+            </svg> 
+            <div class="next">
+                <a href="#" class=" blue">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    In Stock
+                  </a>
+
+            </div>
+        </div>
+
+        <div class="items">
+ 
+
+    </div>
+
+    
+
+    <script>
+        /*few things are thappening here in the first part the data needed for the app towrk is hard-coded here i am generating html on the fly with these product names and images to urls
+        the second part h from line 109 to th 213 handles the actual UI functionality , that is the swipe like motion that is triggered when the out of stock button is triggered or in stock button is triggered.
+        the third part from 223 to 314 is concerned with the product of the a particular button being pressed since at the end of the process all items will either be marked in stock or out of stock.
+        */
+        const names = ['Yeo Valley Organic Semi Skimmed Milk 1L', 'Yeo Valley Organic Semi Skimmed Milk 2L', 'Yeo Valley Organic Whole Milk 1L', 'Yeo Valley Organic Whole Milk 2L', 'Yeo Valley Organic Double Cream 220ml', 'Longley Farm Fresh Buttermilk 500ml', "Delamere Fresh Whole Goat's Milk 1l", 'Longley Farm Double Cream 150ml', 'Yeo Valley Organic Soured Cream 200g', 'Isigny Chantilly Spray Cream 250ml', 'Yeo Valley Organic Salted Butter 250g', 'Yeo Valley Organic Unsalted Butter 250g', 'Isigny PDO Salted Butter Roll 250g', 'Isigny PDO Unsalted Butter 250g', 'Fen Farm Bungay Raw Milk Butter 200g', 'Biotiful Organic Kefir 250ml', 'Biotiful Organic Kefir 500ml', 'Biotiful Kefir Protein Original 250g', 'Arla Skyr Natural Yoghurt 450g', 'Total 0% Fat Free Yogurt 150g', 'Total Greek Yoghurt 0% 450g', 'Total Greek Yoghurt 5% 450g', 'Total Greek Yoghurt 2% 450g', 'Yeo Valley Organic Natural Yoghurt 450g', 'La Fermiere Vanilla Yoghurt 140g', 'La Fermiere Natural Yoghurt 140g', 'La Fermiere Honey Yoghurt 140g', 'La Fermiere Lemon Yoghurt 140g', 'La Fermiere Plain Rice Pudding 160g', 'River Cottage Organic Natural Yoghurt 475ml', 'River Cottage Organic Real Vanilla Yoghurt 475ml', 'River Cottage Organic Honey Yoghurt 160ml', 'River Cottage Organic Blackcurrant On The Bottom Yoghurt 160ml', 'River Cottage Organic Raspberry On The Bottom Yorghurt 160ml', 'Pur Natur Organic Large Natural Full Fat Yogurt 500g', 'Pur Natur Organic Full Fat Yogurt Blueberry 150g', 'Pur Natur Organic Full Fat Yogurt Apricot 150g', 'Bergerie Natural Goats Yogurt 125g', 'Bergerie Organic Vanilla Goats Milk Yogurt 125g', 
+'The Collective Suckies Strawberry Pouch 100g', 'The Collective Suckies Peach Apricot Pouch 100g']
+
+
+
+
+const imageFilenames = {'Yeo Valley Organic Semi Skimmed Milk 1L': 'https://rs-menus-api.roocdn.com/images/e1ed2ccd-744e-464f-b0f6-cc8dbdc90848/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Yeo Valley Organic Semi Skimmed Milk 2L': 'https://rs-menus-api.roocdn.com/images/32e9ebea-ae6e-48b1-a1bf-6c9283b4f672/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Yeo Valley Organic Whole Milk 1L': 'https://rs-menus-api.roocdn.com/images/75c1ebe5-f75d-49ff-9bb3-95a379d9502d/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Yeo Valley Organic Whole Milk 2L': 'https://rs-menus-api.roocdn.com/images/07f3afa7-f76b-47c9-9260-891ca11b94f8/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Yeo Valley Organic Double Cream 220ml': 'https://rs-menus-api.roocdn.com/images/b7723234-a993-492d-af71-a09450a5269a/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Longley Farm Fresh Buttermilk 500ml': 'https://rs-menus-api.roocdn.com/images/a1835a1f-c0ba-44a3-b343-eb0d62a912bf/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', "Delamere Fresh Whole Goat's Milk 1l": 'https://rs-menus-api.roocdn.com/images/95801597-028e-42fd-86b2-fbe1ab8109be/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Longley Farm Double Cream 150ml': 'https://rs-menus-api.roocdn.com/images/5df27210-b445-4035-be9b-083f181b87d1/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Yeo Valley Organic Soured Cream 200g': 'https://rs-menus-api.roocdn.com/images/ff3124f3-44bb-4152-9103-cd25502005c2/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Isigny Chantilly Spray Cream 250ml': 'https://rs-menus-api.roocdn.com/images/3f488cf0-504c-490a-a0fa-d26102e6f911/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Yeo Valley Organic Salted Butter 250g': 'https://rs-menus-api.roocdn.com/images/acee95c7-87b3-4c33-8494-677f88e9cae8/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Yeo Valley Organic Unsalted Butter 250g': 'https://rs-menus-api.roocdn.com/images/127912e9-ee0e-4393-a17f-64b38fa4cb0b/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Isigny PDO Salted Butter Roll 250g': 'https://rs-menus-api.roocdn.com/images/36f3880c-ddb3-4542-826a-5ffe6a80c64b/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Isigny PDO Unsalted Butter 250g': 'https://rs-menus-api.roocdn.com/images/6fc6f000-d915-4b0e-a50a-b770bee41b12/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Fen Farm Bungay Raw Milk Butter 200g': 'https://rs-menus-api.roocdn.com/images/e447128a-ed4f-4dd6-bafa-fa0e3912235a/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Biotiful Organic Kefir 250ml': 'https://rs-menus-api.roocdn.com/images/2028497c-5a35-4a12-90d1-f05b27fabf5f/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Biotiful Organic Kefir 500ml': 'https://rs-menus-api.roocdn.com/images/d7c52508-6279-488f-97ec-2e04ec0eb6bc/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Biotiful Kefir Protein Original 250g': 'https://rs-menus-api.roocdn.com/images/d2596272-15f6-43e9-9892-ce38194a97f6/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Arla Skyr Natural Yoghurt 450g': 'https://rs-menus-api.roocdn.com/images/46d3861e-31dc-4c3d-937a-0168cb93efca/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Total 0% Fat Free Yogurt 150g': 'https://rs-menus-api.roocdn.com/images/ec06d490-693e-4b71-9690-3fa14e9068e3/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Total Greek Yoghurt 0% 450g': 'https://rs-menus-api.roocdn.com/images/91c23fbb-997a-4399-91c7-45963ef55cd0/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Total Greek Yoghurt 5% 450g': 'https://rs-menus-api.roocdn.com/images/230f92ea-0c14-4bdc-9314-ad706f8c987d/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Total Greek Yoghurt 2% 450g': 'https://rs-menus-api.roocdn.com/images/7ad11ae0-e8a1-4a84-ae6d-62b8abc03002/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Yeo Valley Organic Natural Yoghurt 450g': 'https://rs-menus-api.roocdn.com/images/8e4cc057-0518-4e76-ad9e-99ceddedf484/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'La Fermiere Vanilla Yoghurt 140g': 'https://rs-menus-api.roocdn.com/images/09575257-c427-41a7-b8d5-39e837c34558/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'La Fermiere Natural Yoghurt 140g': 'https://rs-menus-api.roocdn.com/images/abb2e17d-8635-4733-a796-12812f8f870c/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'La Fermiere Honey Yoghurt 140g': 'https://rs-menus-api.roocdn.com/images/167d49e3-c626-4865-a2b6-74c12ea90a4d/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'La Fermiere Lemon Yoghurt 140g': 'https://rs-menus-api.roocdn.com/images/d31a81f9-b38b-4e9e-ba60-be98b5001307/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 
+'La Fermiere Plain Rice Pudding 160g': 'https://rs-menus-api.roocdn.com/images/cca19f5f-b047-4121-8c0e-74101aebfd37/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'River Cottage Organic Natural Yoghurt 475ml': 'https://rs-menus-api.roocdn.com/images/7c2ad024-428b-4c8b-926b-32656967d18a/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'River Cottage Organic Real Vanilla Yoghurt 475ml': 'https://rs-menus-api.roocdn.com/images/83841c99-b945-4209-9e0d-ced110e2f565/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'River Cottage Organic Honey Yoghurt 160ml': 'https://rs-menus-api.roocdn.com/images/6671cbb2-2bd1-47b2-839d-75b3e2067ffa/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'River Cottage Organic Blackcurrant On The Bottom Yoghurt 160ml': 'https://rs-menus-api.roocdn.com/images/4dbb567e-ed9b-49ce-916d-0d8ea50780d2/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'River Cottage Organic Raspberry On The Bottom Yorghurt 160ml': 'https://rs-menus-api.roocdn.com/images/3227b248-f147-4d49-bb81-3c2ffaa95df1/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Pur Natur Organic Large Natural Full Fat Yogurt 500g': 'https://rs-menus-api.roocdn.com/images/45a66901-bd8a-43a1-93a2-b0a93dbc1cd2/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Pur Natur Organic Full Fat Yogurt Blueberry 150g': 'https://rs-menus-api.roocdn.com/images/99934408-86fe-461a-9ac4-49abe7f88657/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Pur Natur Organic Full Fat Yogurt Apricot 150g': 'https://rs-menus-api.roocdn.com/images/add24944-c73e-4650-a36a-cacc70d55580/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Bergerie Natural Goats Yogurt 125g': 'https://rs-menus-api.roocdn.com/images/bb313fde-fd5b-4274-9fa1-6dda9d62a254/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'Bergerie Organic Vanilla Goats Milk Yogurt 125g': 'https://rs-menus-api.roocdn.com/images/2974b91b-b614-47ba-a41d-17d5c6d3ef96/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'The Collective Suckies Strawberry Pouch 100g': 'https://rs-menus-api.roocdn.com/images/e673836c-2dfb-4905-839e-5a23e58bd0e9/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop', 'The Collective Suckies Peach Apricot Pouch 100g': 'https://rs-menus-api.roocdn.com/images/e0fcdcca-40cc-432b-98f2-90488d5fcc04/image.jpeg?width={w}\\u0026height={h}\\u0026auto=webp\\u0026format=jpg\\u0026fit=crop'}
+//imageFilenames.sort()
+   function generateHTML() {
+  const itemsContainer = document.createElement('div');
+  itemsContainer.classList.add('items');
+
+  Object.entries(imageFilenames).forEach(([name, url], index) => {
+    const item = document.createElement('div');
+    item.classList.add('item');
+    if (index === 0) {
+      item.classList.add('is-active');
+    }
+
+    const title = document.createElement('p');
+    title.classList.add('title');
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = name.replace(/&amp;/g, ''); // Remove &amp; occurrence
+    title.appendChild(titleSpan);
+    item.appendChild(title);
+
+    const card = document.createElement('div');
+    card.classList.add('card');
+    const img = document.createElement('img');
+    const encodedFilename = encodeURIComponent(name.replace(/&amp;/g, '')); // Handle special characters in the string
+    img.src = url;
+    img.alt = '';
+    img.classList.add('card-bg');
+    card.appendChild(img);
+    item.appendChild(card);
+
+    itemsContainer.appendChild(item);
+  });
+
+  const container = document.querySelector('.card-slider');
+  container.appendChild(itemsContainer);
+}
+
+generateHTML();
+
+        function init(){
+            let current = 0;
+            let directionForward = true
+            const items = document.querySelectorAll(".card-slider .items .item");
+            const nextBtn = document.querySelector(".card-slider .next");
+            const prevBtn = document.querySelector(".card-slider .prev");
+
+            const goBack = document.querySelector(".go-back");
+
+            const getCurrentItem = () => {
+                return;
+            }
+            const getCard = (item) => {
+                return item.querySelector(".card");
+            }
+
+            const getTitle = (item)=> {
+                return item.querySelector(".title span");
+            }
+
+            const setItems = () => {
+                items.forEach((item,index) => {
+                    getTitle(item).innerHTML = getTitle(item).textContent.replace(/\S/g,
+                    "<span class='letter'>$&</span>"
+                    );
+
+                    if (index == current) return;
+
+                    anime.set(getCard(item),{
+                        translateX: "100vw",
+                    });
+
+                    anime.set(getTitle(item).querySelectorAll(".letter"), {
+                        clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
+                    });
+                });
+
+
+                anime.set(items[current],{
+                    translateX:0,
+                    opacity: 1,
+                });
+            };
+
+            const animate = {
+                in(item){
+                    const card = getCard(item);
+                    const title = getTitle(item);
+
+                    const tl = anime.timeline({
+                        duration:1000,
+                        easing: "easeOutExpo",
+
+                    });
+                    
+                    tl.add({
+                        targets:card,
+                        translateX: directionForward ? ["100vw",0] : ["-100vw",0],
+                        rotate: [40,0], 
+                    }).add({
+                        targets: title.querySelectorAll(".letter"),
+                        clipPath: [
+                            "polygon(0 0, 100% 0, 100% 0, 0 0)",
+                            "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+                        ],
+                        translateY: directionForward ? ["1em", 0] : ["-1em",0],
+                        opacity :[0,1],
+                        delay: anime.stagger(40),
+                    },
+                    "-=1000"
+                    );
+                    return tl;
+                },
+                
+                
+                out(item){
+                    const card = getCard(item);
+                    const title = getTitle(item);
+
+                    const tl = anime.timeline({
+                        duration: 1000,
+                        easing : "cubicBezier(0.86, 0, 0.07, 1)",
+
+                    });
+
+                    tl.add({
+                        targets:card,
+                        translateX: directionForward ? [0,"100vw"] : [0,"-100vw"],
+                        rotate: [0,-40], 
+                    }).add(
+                        {
+                        targets: title.querySelectorAll(".letter"),
+                        clipPath: [
+                            "polygon(0 0 ,100% 0, 100% 100%, 0 100%)",
+                            "polygon(0 0 ,100% 100%,100% 100% ,0 100%)",
+                        ],
+                        translateY: directionForward ? [0,"-1em"] : [0,"-1em"],
+                        opacity :[1,0],
+                        delay: anime.stagger(40),
+                    },
+                    "-=1000"
+                    );
+
+                    return tl;
+
+                }
+                
+            }
+        
+            
+            function updateClasses() {
+                items.forEach((item, index) => {
+                    if (index === current) {
+                        console.log(index)
+                        item.classList.add("is-active");
+                    } else {
+                        item.classList.remove("is-active");
+                    }
+                });
+            }
+            //handling the swinping functionaloty , the idea here was to have an object in the backround that was mapped to products 1 for instock and -1 for out of stock and then send that object.
+            function next(btnID){
+
+
+                if(!directionForward){
+                    directionForward = !directionForward
+                }
+
+                if (btnID === "instock"){
+                    updateArrayValue(current,1)
+                }else{
+                    updateArrayValue(current,-1)
+                }
+
+                animate.out(items[current]);
+                current = (current+1) %items.length;
+                setTimeout(function () {
+                    animate.in(items[current]);
+                },500);
+               
+                updateClasses()
+            }
+
+            function prev(){
+                if(directionForward){
+                    directionForward = !directionForward
+                }
+
+                animate.out(items[current]);
+                current = (current-1 + items.length) %items.length;
+                setTimeout(function () {
+                    animate.in(items[current]);
+                },500);
+
+                updateClasses()
+            }
+            const arraySize = imageFilenames.length; 
+            const initialValue = Array(arraySize).fill(0);
+            sessionStorage.setItem('session', JSON.stringify(initialValue));
+
+            
+            function updateArrayValue(index, value) {
+           
+            const sessionArray = JSON.parse(sessionStorage.getItem('session'));
+
+            
+            sessionArray[index] = value;
+            console.log(sessionArray)
+           
+            sessionStorage.setItem('session', JSON.stringify(sessionArray));
+
+            
+            const allChanged = sessionArray.every(item => item !== 0 );
+            if (allChanged && sessionArray.every(item => item != 0)) {
+                
+                const results = {}
+                names.forEach((productname,index)=>{
+                    results[productname] = sessionArray[index]
+                })
+                console.log(results)
+                
+                return results
+             }
+            }
+            
+            nextBtn.addEventListener("click", function() {
+            next("instock");
+            });
+            prevBtn.addEventListener("click", function() {
+            next("outofstock");
+            });
+            
+            goBack.addEventListener("click", prev);
+            setItems();
+            
+        }
+        document.addEventListener("DOMContentLoaded", init);
+
+        
+    </script>
+      
+        
+</body>
+</html>
