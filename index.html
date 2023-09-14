@@ -306,6 +306,13 @@ generateHTML();
             setItems();
             
         }
+        // Had a bug with website where sometimes the time it took to load the images into array was longer than the request from the
+        //eventListener. was getting an error Uncaught TypeError: Cannot set properties of null (setting '0') (index):34.quickfix was to refresh the page twice on initial visitation since this is an mvp.
+        //ideal solution would be to implement a lazy-loading where only items  -1 ,0 , 1 are loaded which should be enough time for the rest of the images to be stored in array. 
+        if (!localStorage.getItem('pageRefreshed')){
+            location.reload(true)
+            localStorage.setItem('pageRefreshed','true')
+        }
         document.addEventListener("DOMContentLoaded", init);
 
         
