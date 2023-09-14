@@ -1,0 +1,30 @@
+From af4c3b6587c9b7ef92b78b85af3babd9fe757c0e Mon Sep 17 00:00:00 2001
+From: AlexeiVartoumian <alex.vartoumian@gmail.com>
+Date: Thu, 14 Sep 2023 19:29:54 +0100
+Subject: [PATCH] temp-fix on load images bug
+
+---
+ index.html | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/index.html b/index.html
+index 54cfd26..6a82659 100644
+--- a/index.html
++++ b/index.html
+@@ -306,6 +306,13 @@ generateHTML();
+             setItems();
+             
+         }
++        // Had a bug with website where sometimes the time it took to load the images into array was longer than the request from the
++        //eventListener. was getting an error Uncaught TypeError: Cannot set properties of null (setting '0') (index):34.quickfix was to refresh the page twice on initial visitation since this is an mvp.
++        //ideal solution would be to implement a lazy-loading where only items  -1 ,0 , 1 are loaded which should be enough time for the rest of the images to be stored in array. 
++        if (!localStorage.getItem('pageRefreshed')){
++            location.reload(true)
++            localStorage.setItem('pageRefreshed','true')
++        }
+         document.addEventListener("DOMContentLoaded", init);
+ 
+         
+-- 
+2.38.1.windows.1
+
