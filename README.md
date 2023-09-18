@@ -7,7 +7,7 @@ solves the problem of the former process being done with pen and paper with hund
 please see code for comments on technical details. This part of the project is primarily the User Interface./
 
 
-basic mvp can be found here refresh if buttons dont work please:)--> https://titan.dcs.bbk.ac.uk/~avarto01/ok/sliding%20v4/
+basic mvp can be found here --> https://titan.dcs.bbk.ac.uk/~avarto01/ok/sliding%20v4/
 
 below is a gif showing UI.//
 
